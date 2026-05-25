@@ -2,9 +2,10 @@ import type { Expense } from '../types/expense'
 
 interface ExpenseListProps {
   expenses: Expense[]
+  onDeleteExpense: (id: string) => void
 }
 
-function ExpenseList({ expenses }: ExpenseListProps) {
+function ExpenseList({ expenses, onDeleteExpense }: ExpenseListProps) {
   return (
     <div className="expense-list">
       <h2>Expenses</h2>
@@ -21,10 +22,9 @@ function ExpenseList({ expenses }: ExpenseListProps) {
               <span className="expense-amount">${expense.amount.toFixed(2)}</span>
               <span className="expense-category">{expense.category}</span>
               <span className="expense-date">{expense.date}</span>
-              {/* TODO: wire up the delete button — add onDeleteExpense prop to the interface and call it here */}
               <button
                 className="delete-btn"
-                onClick={() => {}}
+                onClick={() => onDeleteExpense(expense.id)}
                 aria-label="Delete expense"
               >
                 {'\u2715'}

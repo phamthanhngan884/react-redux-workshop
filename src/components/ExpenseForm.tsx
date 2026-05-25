@@ -1,9 +1,26 @@
 import { CATEGORIES } from '../constants'
+import type { Expense } from '../types/expense'
 
-function ExpenseForm() {
-  function handleSubmit(e: React.FormEvent) {
+
+//React control input form with useState
+interface ExpenseFormProps {
+  onAddExpense: (newExpense: Expense) => void
+  expenses: Expense[]
+}
+
+function ExpenseForm({ onAddExpense, expenses }: ExpenseFormProps) {
+  function handleSubmit(e : React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    // TODO: create a new expense and add it to the list
+    const formData = new FormData(e.target as HTMLFormElement)
+    const newExpense: Expense = {
+      id: Date.now().toString(),
+      description: formData.get('description') as string,
+      amount: parseFloat(formData.get('amount') as string),
+      category: formData.get('category') as string,
+      date: new Date().toISOString()
+    }
+    onAddExpense(newExpense)
+    ;(e.target as HTMLFormElement).reset()
   }
 
   return (

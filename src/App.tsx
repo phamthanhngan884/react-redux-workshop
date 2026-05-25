@@ -5,18 +5,24 @@ import ExpenseList from './components/ExpenseList'
 import './App.css'
 
 function App() {
-  const [expenses] = useState<Expense[]>([])
+  const [expenses, setExpenses] = useState<Expense[]>([])
 
-  // TODO: add handleAddExpense and handleDeleteExpense
+  const handleAddExpense = (newExpense: Expense) => {
+    setExpenses([...expenses, newExpense])
+  }
+
+  const handleDeleteExpense = (id: string) => {
+    setExpenses(expenses.filter(expense => expense.id !== id))
+  }
 
   return (
     <div className="app-layout">
       <aside>
         <h1>Expense Manager</h1>
-        <ExpenseForm />
+        <ExpenseForm onAddExpense={handleAddExpense} expenses={expenses} />
       </aside>
       <main>
-        <ExpenseList expenses={expenses} />
+        <ExpenseList expenses={expenses} onDeleteExpense={handleDeleteExpense} />
       </main>
     </div>
   )
