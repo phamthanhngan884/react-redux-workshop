@@ -1,14 +1,31 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { Expense } from './types/expense'
 import ExpenseForm from './components/ExpenseForm'
 import ExpenseList from './components/ExpenseList'
 import './App.css'
 
+const STORAGE_KEY = 'expenses'
 function App() {
   const [expenses, setExpenses] = useState<Expense[]>([])
 
   // TODO: load expenses from localStorage on mount
+  useEffect(() => {
+    const stored = localStorage.getItem(STORAGE_KEY)
+    if (stored) {
+      try {
+        setExpenses(JSON.parse(stored))
+      } catch (error) {
+        console.error('Failed to load expenses from localStorage:', error)
+      }
+    }
+  }, [])
+
   // TODO: save expenses to localStorage whenever the list changes
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(expenses))
+  }, [expenses])
+
+
 
   function handleAddExpense(expense: Omit<Expense, 'id'>) {
     setExpenses(prev => [
