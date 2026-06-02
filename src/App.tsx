@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import type { Expense } from './types/expense'
 import { STORAGE_KEY } from './constants'
 import { filterExpenses } from './utils/filterExpenses'
@@ -31,9 +31,9 @@ function App() {
   )
 
   // TODO: wrap handleDeleteExpense in useCallback to stabilize reference for ExpenseItem (React.memo)
-  function handleDeleteExpense(id: string) {
+  const handleDeleteExpense = useCallback((id: string) => {
     setExpenses(prev => prev.filter(e => e.id !== id))
-  }
+  }, [])
 
   function handleAddExpense(expense: Omit<Expense, 'id'>) {
     setExpenses(prev => [
